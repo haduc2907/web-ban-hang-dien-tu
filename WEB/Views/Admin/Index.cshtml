@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Trang Quản Trị";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminView.css" />
+}
+<link rel="stylesheet" href="~/css/admin.css" />
+
+<div class="admin-menu">
+    <h1>Trang Quản Trị</h1>
+
+    <div class="menu-buttons">
+        <a asp-controller="Home" asp-action="Manager" class="menu-btn">Quản lý sản phẩm</a>
+        <a asp-controller="Categories" asp-action="Manager" class="menu-btn">Quản lý danh mục</a>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+﻿/* Chỉ áp dụng trong .category-container */
+.category-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+    .category-container h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
+
+    /* Chỉ áp dụng cho link trong category-container */
+    .category-container .top-bar {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 15px;
+    }
+
+    .category-container .btn {
+        padding: 6px 12px;
+        text-decoration: none;
+        border-radius: 6px;
+        color: #fff; /* chỉ đổi màu trong trang này */
+        font-weight: bold;
+        transition: background 0.2s ease-in-out;
+    }
+
+    .category-container .btn-add {
+        background-color: #27ae60;
+    }
+
+        .category-container .btn-add:hover {
+            background-color: #1e8449;
+        }
+
+    .category-container .btn-edit {
+        background-color: #f39c12;
+        margin-right: 5px;
+    }
+
+        .category-container .btn-edit:hover {
+            background-color: #d68910;
+        }
+
+    .category-container .btn-delete {
+        background-color: #e74c3c;
+    }
+
+        .category-container .btn-delete:hover {
+            background-color: #c0392b;
+        }
+
+    .category-container .category-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .category-container .category-table th,
+        .category-container .category-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .category-container .category-table th {
+            background-color: #3498db;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .category-container .category-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .category-container .category-table tr:hover {
+            background-color: #f1f1f1;
+        }

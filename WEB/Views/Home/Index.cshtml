@@ -1,0 +1,105 @@
+﻿@using Entities
+@model WEB.Models.ProductListViewModel
+
+@{
+    ViewData["Title"] = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int stt = 1;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Danh mục -->
+        <div class="col-md-3">
+            <div class="category-list list-group">
+                <a asp-action="Index" class="list-group-item list-group-item-action @(Context.Request.Query["categoryId"].Count == 0 ? "active" : "")">
+                    Tất cả
+                </a>
+                @foreach (var cat in Model.Categories)
+                {
+                    <a asp-action="Index" asp-route-categoryId="@cat.Id"
+                       class="list-group-item list-group-item-action @(Context.Request.Query["categoryId"].ToString() == cat.Id.ToString() ? "active" : "")">
+                        @cat.Name
+                    </a>
+                }
+            </div>
+        </div>
+
+        <!-- Danh sách sản phẩm -->
+        <div class="col-md-9">
+            <h2 class="mb-3">Danh sách sản phẩm</h2>
+
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-success">@TempData["Message"]</div>
+            }
+
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Stt</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Hình ảnh</th>
+                        <th>Giá</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Products.Any())
+                    {
+                        @foreach (var item in Model.Products)
+                        {
+                            <tr>
+                                <td>@stt</td>
+                                <td>@item.Name</td>
+                                <td>@item.Quantity</td>
+                                <td>
+                                    <img src="@item.ImageUrl" alt="@item.Name" style="width:100px; height:auto;" />
+                                </td>
+                                <td>@item.Price.ToString("N0") đ</td>
+                                <td>
+                                    @if (item.Status == EStatusProduct.Available)
+                                    {
+                                        <span class="text-success">Còn hàng</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger">Hết hàng</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Status == EStatusProduct.Available)
+                                    {
+                                        <a asp-controller="Carts"
+                                           asp-action="AddToCart"
+                                           asp-route-productId="@item.Id"
+                                           asp-route-userId="@Context.Session.GetString("UserId")"
+                                           class="btn btn-warning btn-sm">
+                                            Thêm vào giỏ hàng
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-secondary btn-sm" disabled>Hết hàng</button>
+                                    }
+                                    <a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Chi tiết</a>
+                                </td>
+                            </tr>
+                            stt++;
+                        }
+                    }
+
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" style="text-align:center;">Chưa có sản phẩm nào</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,24 @@
+﻿@model WEB.Models.LoginViewModel
+
+<h2>Đăng nhập</h2>
+
+<!-- Hiển thị thông báo lỗi -->
+<div class="text-danger">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+</div>
+
+<form asp-action="Login" method="post">
+    <div class="mb-3">
+        <label for="UserName" class="form-label">Tên đăng nhập</label>
+        <input asp-for="UserName" class="form-control" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="Password" class="form-label">Mật khẩu</label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Đăng nhập</button>
+</form>

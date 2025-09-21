@@ -1,0 +1,40 @@
+﻿@model WEB.Models.UserViewModel
+
+@{
+    ViewData["Title"] = "Thông tin người dùng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg border-0 rounded-3" style="max-width: 600px; margin: auto;">
+        <div class="card-body text-center p-4">
+            <!-- Avatar (nếu chưa có ảnh thì dùng avatar mặc định) -->
+            <img src="https://ui-avatars.com/api/?name=@(Model.FullName ?? Model.UserName)&background=007bff&color=fff&size=120"
+                 alt="Avatar" class="rounded-circle mb-3" style="width:120px; height:120px; object-fit:cover;" />
+
+            <h3 class="card-title mb-1">@(!string.IsNullOrEmpty(Model.FullName) ? Model.FullName : Model.UserName)</h3>
+            <p class="text-muted">@Model.Role.ToString()</p>
+
+            <hr />
+
+            <div class="text-start px-4">
+                <p><strong>Email:</strong> @(Model.Email ?? "Chưa cập nhật")</p>
+                <p><strong>Tên đăng nhập:</strong> @Model.UserName</p>
+                <p><strong>Số điện thoại:</strong> @(Model.PhoneNumber ?? "Chưa cập nhật")</p>
+                <p><strong>Địa chỉ:</strong> @(Model.Address ?? "Chưa cập nhật")</p>
+                <p><strong>Ngày tạo:</strong> @Model.CreatedDate.ToString("dd/MM/yyyy")</p>
+            </div>
+
+            <hr />
+
+            <a asp-action="EditProfile" asp-route-id="@Model.Id" class="btn btn-primary px-4">Chỉnh sửa</a>
+            <a asp-action="ChangePassword" asp-route-id="@Model.Id" class="btn btn-primary px-4">Đổi mật khẩu</a>
+        </div>
+    </div>
+</div>

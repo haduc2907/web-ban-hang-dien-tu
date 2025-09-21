@@ -1,0 +1,55 @@
+﻿@using Entities
+
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Hình ảnh sản phẩm -->
+        <div class="col-md-5">
+            <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded shadow-sm" />
+        </div>
+
+        <!-- Thông tin sản phẩm -->
+        <div class="col-md-7">
+            <h2>@Model.Name</h2>
+            <p class="text-muted">Thương hiệu: <strong>@Model.Brand</strong></p>
+            <p>@Model.Description</p>
+
+            <h4 class="text-danger">Giá: @Model.Price.ToString("N0") VNĐ</h4>
+
+            <p>
+                <strong>Trạng thái:</strong>
+                @if (Model.Status == Entities.EStatusProduct.Available)
+                {
+                    <span class="badge bg-success">Còn hàng</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">Hết hàng</span>
+                }
+            </p>
+
+            <p><strong>Số lượng còn:</strong> @Model.Quantity</p>
+
+            <!-- Nút thêm vào giỏ -->
+            <form asp-action="AddToCart" asp-controller="Carts" method="post">
+                <input type="hidden" name="productId" value="@Model.Id" />
+                @if (Model.Status == EStatusProduct.Available)
+                {
+                    <form asp-controller="Carts" asp-action="AddToCart" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="productId" value="@Model.Id" />
+                        <button type="submit" class="btn btn-warning btn-sm">Thêm vào giỏ hàng</button>
+                    </form>
+                }
+                else
+                {
+                    <button class="btn btn-secondary btn-sm" disabled>Hết hàng</button>
+                }
+                
+            </form>
+        </div>
+    </div>
+</div>

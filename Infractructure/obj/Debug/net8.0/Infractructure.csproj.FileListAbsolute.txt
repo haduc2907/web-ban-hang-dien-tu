@@ -1,0 +1,17 @@
+C:\Users\admin\source\repos\BanHang\Infractructure\bin\Debug\net8.0\Infractructure.deps.json
+C:\Users\admin\source\repos\BanHang\Infractructure\bin\Debug\net8.0\Infractructure.dll
+C:\Users\admin\source\repos\BanHang\Infractructure\bin\Debug\net8.0\Infractructure.pdb
+C:\Users\admin\source\repos\BanHang\Infractructure\bin\Debug\net8.0\Entities.dll
+C:\Users\admin\source\repos\BanHang\Infractructure\bin\Debug\net8.0\UseCase.dll
+C:\Users\admin\source\repos\BanHang\Infractructure\bin\Debug\net8.0\Entities.pdb
+C:\Users\admin\source\repos\BanHang\Infractructure\bin\Debug\net8.0\UseCase.pdb
+C:\Users\admin\source\repos\BanHang\Infractructure\obj\Debug\net8.0\Infractructure.csproj.AssemblyReference.cache
+C:\Users\admin\source\repos\BanHang\Infractructure\obj\Debug\net8.0\Infractructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\admin\source\repos\BanHang\Infractructure\obj\Debug\net8.0\Infractructure.AssemblyInfoInputs.cache
+C:\Users\admin\source\repos\BanHang\Infractructure\obj\Debug\net8.0\Infractructure.AssemblyInfo.cs
+C:\Users\admin\source\repos\BanHang\Infractructure\obj\Debug\net8.0\Infractructure.csproj.CoreCompileInputs.cache
+C:\Users\admin\source\repos\BanHang\Infractructure\obj\Debug\net8.0\Infractr.DAFFDE02.Up2Date
+C:\Users\admin\source\repos\BanHang\Infractructure\obj\Debug\net8.0\Infractructure.dll
+C:\Users\admin\source\repos\BanHang\Infractructure\obj\Debug\net8.0\refint\Infractructure.dll
+C:\Users\admin\source\repos\BanHang\Infractructure\obj\Debug\net8.0\Infractructure.pdb
+C:\Users\admin\source\repos\BanHang\Infractructure\obj\Debug\net8.0\ref\Infractructure.dll

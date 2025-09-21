@@ -1,0 +1,15 @@
+C:\Users\admin\source\repos\BanHang\UseCase\bin\Debug\net8.0\UseCase.deps.json
+C:\Users\admin\source\repos\BanHang\UseCase\bin\Debug\net8.0\UseCase.dll
+C:\Users\admin\source\repos\BanHang\UseCase\bin\Debug\net8.0\UseCase.pdb
+C:\Users\admin\source\repos\BanHang\UseCase\bin\Debug\net8.0\Entities.dll
+C:\Users\admin\source\repos\BanHang\UseCase\bin\Debug\net8.0\Entities.pdb
+C:\Users\admin\source\repos\BanHang\UseCase\obj\Debug\net8.0\UseCase.csproj.AssemblyReference.cache
+C:\Users\admin\source\repos\BanHang\UseCase\obj\Debug\net8.0\UseCase.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\admin\source\repos\BanHang\UseCase\obj\Debug\net8.0\UseCase.AssemblyInfoInputs.cache
+C:\Users\admin\source\repos\BanHang\UseCase\obj\Debug\net8.0\UseCase.AssemblyInfo.cs
+C:\Users\admin\source\repos\BanHang\UseCase\obj\Debug\net8.0\UseCase.csproj.CoreCompileInputs.cache
+C:\Users\admin\source\repos\BanHang\UseCase\obj\Debug\net8.0\UseCase.csproj.Up2Date
+C:\Users\admin\source\repos\BanHang\UseCase\obj\Debug\net8.0\UseCase.dll
+C:\Users\admin\source\repos\BanHang\UseCase\obj\Debug\net8.0\refint\UseCase.dll
+C:\Users\admin\source\repos\BanHang\UseCase\obj\Debug\net8.0\UseCase.pdb
+C:\Users\admin\source\repos\BanHang\UseCase\obj\Debug\net8.0\ref\UseCase.dll

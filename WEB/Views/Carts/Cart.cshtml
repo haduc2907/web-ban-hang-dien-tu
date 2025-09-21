@@ -1,0 +1,55 @@
+﻿@model WEB.Models.CartItemListViewModel
+
+<h2>Giỏ hàng của bạn</h2>
+
+@if (Model.CartItems != null && Model.CartItems.Any())
+{
+    <form asp-action="UpdateCart" method="post">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Hình ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                    <th>Tổng</th>
+                    <th>Xóa</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CartItems)
+                {
+                    <tr>
+                        <td><img src="@item.ImageUrl" style="width:100px" /></td>
+                        <td>@item.Name</td>
+                        <td>
+                            <div class="input-group" style="max-width:120px;">
+                                <button type="submit" name="decrease" value="@item.ProductId" class="btn btn-outline-secondary">-</button>
+                                <input type="text" name="Quantities[@item.ProductId]"
+                                       value="@item.Quantity"
+                                       class="form-control text-center" />
+                                <button type="submit" name="increase" value="@item.ProductId" class="btn btn-outline-secondary">+</button>
+                            </div>
+                        </td>
+                        <td>@item.Price.ToString("N0") đ</td>
+                        <td>@string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", item.Price * item.Quantity) đ</td>
+                        <td>
+                            <button type="submit" name="remove" value="@item.ProductId" class="btn btn-danger">Xóa</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <h3 class="text-end">
+            Tổng cộng: @string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", Model.CartItems.Sum(c => c.Price * c.Quantity)) đ
+        </h3>
+
+        <div class="text-end">
+            <button type="submit" name="checkout" class="btn btn-success">Thanh toán</button>
+        </div>
+    </form>
+}
+else
+{
+    <p>Giỏ hàng trống.</p>
+}

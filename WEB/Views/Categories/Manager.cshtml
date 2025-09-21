@@ -1,0 +1,56 @@
+﻿@model WEB.Models.ProductListViewModel
+
+@{
+    ViewData["Title"] = "Quản lý danh mục";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/category.css" />
+}
+
+<div class="category-container">
+    <h1>Quản lý danh mục</h1>
+
+    <div class="top-bar">
+        <a asp-action="Add" class="btn btn-add">+ Thêm danh mục</a>
+    </div>
+
+    <table class="category-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên danh mục</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Categories.Any())
+            {
+                foreach (var category in Model.Categories)
+                {
+                    <tr>
+                        <td>@category.Id</td>
+                        <td>@category.Name</td>
+                        <td>
+                            <a asp-action="Update" asp-route-categoryId="@category.Id" class="btn btn-edit">Sửa</a>
+                            <a asp-action="Delete" asp-route-categoryId="@category.Id" class="btn btn-delete"
+                               onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không?');">
+                                Xóa
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" style="text-align:center;">Chưa có danh mục nào</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
