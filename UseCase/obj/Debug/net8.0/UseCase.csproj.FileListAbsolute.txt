@@ -13,3 +13,4 @@ C:\Users\admin\source\repos\BanHang\UseCase\obj\Debug\net8.0\UseCase.dll
 C:\Users\admin\source\repos\BanHang\UseCase\obj\Debug\net8.0\refint\UseCase.dll
 C:\Users\admin\source\repos\BanHang\UseCase\obj\Debug\net8.0\UseCase.pdb
 C:\Users\admin\source\repos\BanHang\UseCase\obj\Debug\net8.0\ref\UseCase.dll
+C:\Users\admin\source\repos\BanHang\UseCase\obj\Debug\net8.0\UseCase.sourcelink.json

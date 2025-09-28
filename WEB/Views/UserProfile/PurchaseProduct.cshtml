@@ -1,0 +1,79 @@
+﻿@using Entities
+@model WEB.Models.PurchasedProductListViewModel
+
+@{
+    ViewData["Title"] = "Lịch sử mua hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int stt = 1;
+}
+
+<div class="container mt-4">
+    <h2>Lịch sử mua hàng</h2>
+
+    @if (Model != null && Model.PurchasedProducts.Any())
+    {
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Stt</th>
+                    <th>Hình ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                    <th>Tổng tiền</th>
+                    <th>Ngày mua</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PurchasedProducts)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        <td><img src="@item.ImageUrl" alt="@item.Name" style="width:100px; height:auto;" /></td>
+                        <td>@item.Name</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Price.ToString("N0") đ</td>
+                        <td>@string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", item.Price * item.Quantity) đ</td>
+                        <td>@item.PurchasedDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        <td>
+                            @if (item.Status == EOrderStatus.PendingConfirmation)
+                            {
+                                <button class="btn btn-warning btn-sm" disabled>Đơn hàng đang được chờ xác nhận</button>
+                            }
+                            else if(item.Status == EOrderStatus.ToBeShipped)
+                            {
+                                <button class="btn btn-info btn-sm" disabled>Đơn hàng đang được giao</button>
+                            }
+                            else if(item.Status == EOrderStatus.Delivered)
+                            {
+                                <button class="btn btn-success btn-sm" disabled>Đơn hàng đã giao thành công</button>
+                                <a asp-action="Review" asp-controller="Home" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Đánh giá</a>
+                            }
+                            else if(item.Status == EOrderStatus.Cancelled)
+                            {
+                                <button class="btn btn-danger btn-sm" disabled>Đơn hàng đã bị hủy</button>
+                            }
+                            else if(item.Status == EOrderStatus.Reviewed)
+                            {
+                                <button class="btn btn-secondary btn-sm" disabled>Đã đánh giá đơn hàng</button>
+                            }
+
+                            @* <a asp-action="Review" asp-controller="Home" asp-route-productId="@item.ProductId" class="btn btn-sm btn-primary">Đánh giá</a> *@
+                        </td>
+                        
+                    </tr>
+                    stt++;
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">Bạn chưa mua sản phẩm nào.</div>
+    }
+
+    <div class="text-end mt-3">
+        <a asp-action="Index" asp-controller="Home" class="btn btn-primary">Tiếp tục mua sắm</a>
+    </div>
+</div>

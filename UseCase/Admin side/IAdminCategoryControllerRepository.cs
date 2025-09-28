@@ -9,9 +9,10 @@ namespace UseCase.Admin_side
 {
     public interface IAdminCategoryControllerRepository
     {
-        void Add(Category category);
+        void Add(Categories category);
         void Delete(int categoryId);
-        Category? GetById(int categoryId);
-        List<Category> GetAll();
+        Categories? GetById(int categoryId);
+        List<Categories> GetAll();
+        void Update(Categories category);
     }
 }

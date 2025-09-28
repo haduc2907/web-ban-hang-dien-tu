@@ -9,9 +9,10 @@ namespace UseCase.Admin_side
 {
     public interface IUserControllerRepository
     {
-        User? GetById(int userId);
-        void Add(User user);
-        List<User> GetAll();
+        Users? GetById(int userId);
+        void Add(Users user);
+        List<Users> GetAll();
         void Delete(int userId);
+        void Update(Users user);
     }
 }

@@ -9,10 +9,11 @@ namespace UseCase.User_side
 {
     public interface ICartControllerRepository
     {
-        List<CartItem> GetAll(int? userId);
-        void AddToCart(Product product, int? userID);
+        List<CartItems> GetAll(int? userId);
+        void AddToCart(Products product, int? userID);
         void Delete(int id, int userId);
         void UpdateQuantity(int id, int quantity, int userId);
         void Clear(int userId);
+        CartItems? GetById(int productId, int userId);
     }
 }

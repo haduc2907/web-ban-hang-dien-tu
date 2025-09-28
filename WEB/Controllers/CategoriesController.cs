@@ -28,8 +28,7 @@ namespace WEB.Controllers
         [HttpPost]
         public IActionResult Add(CategoryViewModel category)
         {
-            var categories = _adminCategoryController.GetAll();
-            categories.Add(new Category()
+            _adminCategoryController.Add(new Categories()
             {
                 Name = category.Name
             });
@@ -53,15 +52,25 @@ namespace WEB.Controllers
         }
         public IActionResult Delete(int categoryId)
         {
-            var categories = _adminCategoryController.GetAll();
-            var category = _adminCategoryController.GetById(categoryId);
-            if (category != null)
+            try
             {
-                categories.Remove(category);
-                TempData["Message"] = "Xóa danh mục thành công!";
+                var categories = _adminCategoryController.GetAll();
+                var category = _adminCategoryController.GetById(categoryId);
+                if (category != null)
+                {
+                    _adminCategoryController.Delete(categoryId);
+                    TempData["Message"] = "Xóa danh mục thành công!";
+                }
+
+                return RedirectToAction("Manager");
             }
-            
-            return RedirectToAction("Manager");
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Lỗi khi xóa danh mục");
+                TempData["Error"] = "Không thể xóa danh mục này vì có sản phẩm liên quan.";
+                return RedirectToAction("Manager");
+            }
+
 
         }
         [HttpGet]
@@ -91,6 +100,7 @@ namespace WEB.Controllers
             if (cartegory != null)
             {
                 cartegory.Name = categoryView.Name;
+                _adminCategoryController.Update(cartegory);
             }
             return RedirectToAction("Manager");
         }

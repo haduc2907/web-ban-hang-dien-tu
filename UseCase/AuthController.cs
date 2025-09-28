@@ -16,11 +16,11 @@ namespace UseCase
         {
             this.auth = auth;
         }
-        public void Register(User user)
+        public void Register(Users user)
         {
            auth.Register(user);
         }
-        public User? Login(string username, string password)
+        public Users? Login(string username, string password)
         {
             return auth.Login(username, password);
         }

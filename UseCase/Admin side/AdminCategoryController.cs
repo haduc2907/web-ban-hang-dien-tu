@@ -14,7 +14,7 @@ namespace UseCase.Admin_side
         {
             this.repo = repo;
         }
-        public void Add(Category category)
+        public void Add(Categories category)
         {
             repo.Add(category);
         }
@@ -22,13 +22,17 @@ namespace UseCase.Admin_side
         {
             repo.Delete(categoryId);
         }
-        public List<Category> GetAll()
+        public List<Categories> GetAll()
         {
             return repo.GetAll();
         }
-        public Category? GetById(int categoryId)
+        public Categories? GetById(int categoryId)
         {
             return repo.GetById(categoryId);
+        }
+        public void Update(Categories category)
+        {
+            repo.Update(category);
         }
     }
 }

@@ -13,9 +13,11 @@ namespace WEB.Controllers
     public class UserProfileController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly PurchasedProductController _purchasedProductController;
         private readonly UserController _userController;
-        public UserProfileController(UserController userController, ILogger<HomeController> logger)
+        public UserProfileController(PurchasedProductController purchasedProductController, UserController userController, ILogger<HomeController> logger)
         {
+            _purchasedProductController = purchasedProductController;
             _userController = userController;
             _logger = logger;
         }
@@ -85,14 +87,47 @@ namespace WEB.Controllers
             var user = users.FirstOrDefault(u => u.Id == userView.Id);
             if (user != null)
             {
-                user.Email = userView.Email;
-                user.PhoneNumber = userView.PhoneNumber;
                 user.FullName = userView.FullName;
+                user.PhoneNumber = userView.PhoneNumber;
                 user.Address = userView.Address;
-                user.Role = userView.Role;
+                user.Email = userView.Email;
+                _userController.Update(user);
             }
             TempData["Message"] = "Sửa thông tin thành công!";
             return RedirectToAction("Profile", "UserProfile");
+        }
+        public IActionResult PurchaseProduct()
+        {
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdStr))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var userId = int.Parse(userIdStr);
+            var user = _userController.GetById(userId);
+            if (user == null)
+            {
+                TempData["Error"] = "Người dùng không tồn tại!";
+                return RedirectToAction("Cart");
+            }
+
+            return View(new PurchasedProductListViewModel()
+            {
+                PurchasedProducts = _purchasedProductController.GetAll()
+                .Where(p => p.UserId == userId)
+                .Select(p => new PurchasedProductViewModel()
+                {
+                    Id = p.Id,
+                    ProductId = p.ProductId,
+                    ImageUrl = p.ImageUrl,
+                    Price = p.Price,
+                    Name = p.Name,
+                    Quantity = p.Quantity,
+                    PurchasedDate = p.PurchasedDate,
+                    Status = p.Status
+                    
+                })
+            });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

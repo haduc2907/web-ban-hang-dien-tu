@@ -10,12 +10,12 @@ namespace Infractructure
 {
     public class InMemoryCategoryRepository : IAdminCategoryControllerRepository
     {
-        private readonly List<Category> categories;
+        private readonly List<Categories> categories;
         public InMemoryCategoryRepository()
         {
             categories = [];
         }
-        public void Add(Category category)
+        public void Add(Categories category)
         {
             categories.Add(category);
         }
@@ -29,15 +29,24 @@ namespace Infractructure
             }
         }
 
-        public List<Category> GetAll()
+        public List<Categories> GetAll()
         {
             return categories;
         }
 
-        public Category? GetById(int categoryId)
+        public Categories? GetById(int categoryId)
         {
             var category = categories.FirstOrDefault(c => c.Id == categoryId);
             return category;
+        }
+
+        public void Update(Categories category)
+        {
+            var cat = categories.FirstOrDefault(c => c.Id == category.Id);
+            if (cat != null)
+            {
+                cat.Name = category.Name;
+            }
         }
     }
 }

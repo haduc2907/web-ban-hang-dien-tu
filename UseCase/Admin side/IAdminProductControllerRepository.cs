@@ -10,11 +10,11 @@ namespace UseCase.Admin_side
 {
     public interface IAdminProductControllerRepository
     {
-        void Add(Product product);
-        void Update(Product product);
+        void Add(Products product);
+        void Update(Products product);
         void Delete(int Id);
-        Product? GetById(int Id);
-        IEnumerable<Product> GetAll();
-        IEnumerable<Product> GetByCategoryId(int categoryId);
+        Products? GetById(int Id);
+        IEnumerable<Products> GetAll();
+        IEnumerable<Products> GetByCategoryId(int categoryId);
     }
 }

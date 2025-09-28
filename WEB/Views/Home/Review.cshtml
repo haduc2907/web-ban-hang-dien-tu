@@ -1,0 +1,47 @@
+﻿@using Entities
+@model WEB.Models.PurchasedProductViewModel
+@{
+    ViewData["Title"] = "Đánh giá sản phẩm";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Hình ảnh sản phẩm -->
+        <div class="col-md-5">
+            <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded shadow-sm" />
+        </div>
+
+        <!-- Thông tin sản phẩm -->
+        <div class="col-md-7">
+            <h2>@Model.Name</h2>
+            <h4 class="text-danger">Giá: @Model.Price.ToString("N0") VNĐ</h4>
+        </div>
+    </div>
+</div>
+<div class="mt-4">
+    <h4>Đánh giá sản phẩm</h4>
+    <form asp-action="Review" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="productId" value="@Model.ProductId" />
+        <input type="hidden" name="id" value="@Model.Id" />
+
+        <div class="mb-3">
+            <label for="rating" class="form-label">Chọn số sao:</label>
+            <select class="form-select" id="rating" name="rating" required>
+                <option value="">--Chọn--</option>
+                <option value="1">1 sao</option>
+                <option value="2">2 sao</option>
+                <option value="3">3 sao</option>
+                <option value="4">4 sao</option>
+                <option value="5">5 sao</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="comment" class="form-label">Bình luận:</label>
+            <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+    </form>
+</div>

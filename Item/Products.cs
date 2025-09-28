@@ -2,9 +2,8 @@
 
 namespace Entities
 {
-    public class Product
+    public class Products
     {
-        private static int count = 0;
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
@@ -16,9 +15,6 @@ namespace Entities
         public DateTime UpdatedDate { get; set; }
         public int CategoryId { get; set; } 
         public string Brand { get; set; } = string.Empty;
-        public Product()
-        {
-            this.Id = ++count;
-        }
+        public List<Reviews> Reviews { get; set; } = [];
     }
 }

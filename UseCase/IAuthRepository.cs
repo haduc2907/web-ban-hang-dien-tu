@@ -9,7 +9,7 @@ namespace UseCase
 {
     public interface IAuthRepository
     {
-        void Register(User user);
-        User? Login(string username, string password);
+        void Register(Users user);
+        Users? Login(string username, string password);
     }
 }

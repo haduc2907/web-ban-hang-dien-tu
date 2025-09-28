@@ -15,3 +15,4 @@ C:\Users\admin\source\repos\BanHang\Infractructure\obj\Debug\net8.0\Infractructu
 C:\Users\admin\source\repos\BanHang\Infractructure\obj\Debug\net8.0\refint\Infractructure.dll
 C:\Users\admin\source\repos\BanHang\Infractructure\obj\Debug\net8.0\Infractructure.pdb
 C:\Users\admin\source\repos\BanHang\Infractructure\obj\Debug\net8.0\ref\Infractructure.dll
+C:\Users\admin\source\repos\BanHang\Infractructure\obj\Debug\net8.0\Infractructure.sourcelink.json

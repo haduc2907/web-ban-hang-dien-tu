@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
-    public class Category
+    public class Categories
     {
-        private static int count = 0;
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public Category()
-        {
-            Id = ++count;
-        }
+
     }
 }

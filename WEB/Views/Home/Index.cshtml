@@ -29,6 +29,43 @@
         <div class="col-md-9">
             <h2 class="mb-3">Danh sách sản phẩm</h2>
 
+            <!-- Form tìm kiếm và lọc -->
+            <form asp-action="Index" method="get" class="mb-3 row g-2">
+                <input type="hidden" name="categoryId" value="@Context.Request.Query["categoryId"]" />
+
+                <div class="col-md-3">
+                    <input type="text" name="options.Keyword" value="@Context.Request.Query["options.Keyword"]"
+                           class="form-control" placeholder="Tìm theo tên..." />
+                </div>
+                <div class="col-md-2">
+                    <input type="number" name="options.MinPrice" value="@Context.Request.Query["options.MinPrice"]"
+                           class="form-control" placeholder="Giá từ" />
+                </div>
+                <div class="col-md-2">
+                    <input type="number" name="options.MaxPrice" value="@Context.Request.Query["options.MaxPrice"]"
+                           class="form-control" placeholder="Giá đến" />
+                </div>
+                <div class="col-md-2">
+                    <input type="text" name="options.Brand" value="@Context.Request.Query["options.Brand"]"
+                           class="form-control" placeholder="Thương hiệu" />
+                </div>
+                <div class="col-md-2">
+                    <select name="options.Status" class="form-select">
+                        <option value="">-- Trạng thái --</option>
+                        <option value="Available" selected="@(Context.Request.Query["options.Status"] == "Available")">
+                            Còn hàng
+                        </option>
+                        <option value="OutOfStock" selected="@(Context.Request.Query["options.Status"] == "OutOfStock")">
+                            Hết hàng
+                        </option>
+
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-primary w-100">Lọc</button>
+                </div>
+            </form>
+
             @if (TempData["Message"] != null)
             {
                 <div class="alert alert-success">@TempData["Message"]</div>
@@ -90,7 +127,6 @@
                             stt++;
                         }
                     }
-
                     else
                     {
                         <tr>
@@ -102,4 +138,3 @@
         </div>
     </div>
 </div>
-

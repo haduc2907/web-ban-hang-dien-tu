@@ -1,5 +1,6 @@
 ﻿@using Entities
-
+@model WEB.Models.ProductViewModel
+@using System.Linq
 @{
     ViewData["Title"] = "Chi tiết sản phẩm";
 }
@@ -53,3 +54,37 @@
         </div>
     </div>
 </div>
+
+
+<!-- Danh sách review -->
+<div class="mt-4">
+    <h4>Đánh giá từ người dùng</h4>
+    @if (Model.Reviews != null && Model.Reviews.Any())
+    {
+        @foreach (var review in Model.Reviews.OrderByDescending(r => r.CreatedDate))
+        {
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h6>
+                        @review.UserName -
+                        @for (int i = 0; i < review.Rating; i++)
+                        {
+                            <span class="text-warning">&#9733;</span>
+                        }
+                        @for (int i = review.Rating; i < 5; i++)
+                        {
+                            <span class="text-muted">&#9733;</span>
+                        }
+                    </h6>
+                    <p>@review.Comment</p>
+                    <small class="text-muted">@review.CreatedDate.ToString("dd/MM/yyyy HH:mm")</small>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Chưa có đánh giá nào cho sản phẩm này.</p>
+    }
+</div>
+

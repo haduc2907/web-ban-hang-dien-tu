@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using UseCase;
 using UseCase.Admin_side;
 using UseCase.User_side;
@@ -12,14 +13,20 @@ namespace WEB.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private AdminCategoryController _adminCategoryController;
-        private UserController _userController;
-        private CartController _cartController;
-        private AdminProductController _adController;
+        private readonly UserReviewController _userReviewController;
+        private readonly PurchasedProductController _purchasedProductController;
+        private readonly UserProductController _userProductController;
+        private readonly AdminCategoryController _adminCategoryController;
+        private readonly UserController _userController;
+        private readonly CartController _cartController;
+        private readonly AdminProductController _adController;
         private readonly AuthController _authController;
 
-        public HomeController(AdminCategoryController adminCategoryController, UserController userController, CartController cartController, AdminProductController adController, AuthController authController, ILogger<HomeController> logger)
+        public HomeController(UserReviewController userReviewController, PurchasedProductController purchasedProductController, UserProductController userProductController, AdminCategoryController adminCategoryController, UserController userController, CartController cartController, AdminProductController adController, AuthController authController, ILogger<HomeController> logger)
         {
+            _userReviewController = userReviewController;
+            _purchasedProductController = purchasedProductController;
+            _userProductController = userProductController;
             _adminCategoryController = adminCategoryController;
             _userController = userController;
             _cartController = cartController;
@@ -27,19 +34,23 @@ namespace WEB.Controllers
             _authController = authController;
             _logger = logger;
         }
-
-        public IActionResult Index(int? categoryId)
+        public IActionResult Index(int? categoryId, ProductFilterOptions options)
         {
             
             var categories = _adminCategoryController.GetAll();
-            IEnumerable<Product> products;
+            IEnumerable<Products> products;
             if (categoryId.HasValue)
             {
                 products = _adController.GetByCategoryId(categoryId.Value);
             }
             else
             {
-                products = _adController.GetAll(); // mặc định lấy hết
+                products = _adController.GetAll();
+            }
+            if (options != null)
+            {
+                options.CategoryId = categoryId;
+                products = _userProductController.Filters(products, options);
             }
             return View(new ProductListViewModel()
             {
@@ -136,15 +147,15 @@ namespace WEB.Controllers
                 return View(userM);
             }
 
-            var user = new User()
+            var user = new Users()
             {
                 UserName = userM.UserName,
                 Email = userM.Email,
-                Password = userM.Password
+                Password = userM.Password,
+                Role = ESRoleUser.Customer
             };
 
             _authController.Register(user);
-            _userController.Add(user);
 
             return RedirectToAction("Login");
         }
@@ -164,28 +175,38 @@ namespace WEB.Controllers
         [HttpPost]
         public IActionResult Add(ProductViewModel p)
         {
-            if (!ModelState.IsValid)
+            try
             {
+                if (!ModelState.IsValid)
+                {
+                    return View(p);
+                }
+                var status = p.Quantity == 0
+            ? EStatusProduct.OutOfStock
+            : EStatusProduct.Available;
+                _adController.Add(new Entities.Products()
+                {
+                    Name = p.Name,
+                    Description = p.Description,
+                    Quantity = p.Quantity,
+                    ImageUrl = p.ImageUrl,
+                    Price = p.Price,
+                    Status = status,
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now,
+                    CategoryId = p.CategoryId,
+                    Brand = p.Brand
+
+                });
+                return RedirectToAction("Manager");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Lỗi khi thêm sản phẩm");
+                TempData["Error"] = "Lỗi khi thêm sản phẩm";
                 return View(p);
             }
-            var status = p.Quantity == 0
-        ? EStatusProduct.OutOfStock
-        : EStatusProduct.Available;
-            _adController.Add(new Entities.Product()
-            {
-                Name = p.Name,
-                Description = p.Description,
-                Quantity = p.Quantity,
-                ImageUrl = p.ImageUrl,
-                Price = p.Price,
-                Status = status,
-                CreatedDate = DateTime.Now,
-                UpdatedDate = DateTime.Now,
-                CategoryId = p.CategoryId,
-                Brand = p.Brand
-                
-            });
-            return RedirectToAction("Manager");
+
         }
         [HttpGet]
         public IActionResult Update(int id)
@@ -232,6 +253,7 @@ namespace WEB.Controllers
                 product.UpdatedDate = DateTime.Now;
                 product.CategoryId = model.CategoryId;
                 product.Brand = model.Brand;
+                _adController.Update(product);
             }
             return RedirectToAction("Manager");
 
@@ -246,6 +268,7 @@ namespace WEB.Controllers
         public IActionResult Detail(int id)
         {
             var p = _adController.GetById(id);
+            var r = _userReviewController.GetAll().Where(r => r.ProductId == id).ToList();
             if (p != null)
             {
                 return View(new ProductViewModel()
@@ -257,13 +280,94 @@ namespace WEB.Controllers
                     ImageUrl = p.ImageUrl,
                     Price = p.Price,
                     Status = p.Status,
-                    Brand = p.Brand
+                    Brand = p.Brand,
+                    Reviews = r.Select(rv => new ReviewViewModel()
+                    {
+                        Id = rv.Id,
+                        ProductId = rv.ProductId,
+                        UserId = rv.UserId,
+                        UserName = rv.UserName,
+                        Comment = rv.Comment,
+                        Rating = rv.Rating,
+                        CreatedDate = rv.CreatedDate
+                    }).ToList()
 
 
                 });
             }
-            return RedirectToAction("Index");
-            
+            return RedirectToAction("Index"); 
+        }
+        [HttpGet]
+        public IActionResult Review(int id)
+        {
+            _logger.LogInformation("Id: {i}", id);
+            var pp = _purchasedProductController.GetById(id);
+            if (pp == null)
+            {
+                return RedirectToAction("Index");
+            }
+            var p = _adController.GetById(pp.ProductId);
+            if (p == null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(new PurchasedProductViewModel()
+            {
+                Id = id,
+                Name = pp.Name,
+                ProductId = pp.ProductId,
+                Quantity = pp.Quantity,
+                ImageUrl = pp.ImageUrl,
+                Price = p.Price,
+            });
+        }
+        [HttpPost]
+        public IActionResult Review(string? comment, int rating, int productId, int id)
+        {
+            _logger.LogInformation("ProductId: {p}, Id: {id}", productId, id);
+            var product = _adController.GetById(productId);
+            if (product == null)
+            {
+                return RedirectToAction("Index");
+            }
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdStr))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var userId = int.Parse(userIdStr);
+            var user = _userController.GetById(userId);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            if (rating < 1 || rating > 5)
+            {
+                ModelState.AddModelError(string.Empty, "Đánh giá không hợp lệ. Vui lòng chọn từ 1 đến 5 sao.");
+                return RedirectToAction("Detail", new { id = productId });
+            }
+            var review = new Reviews
+            {
+                ProductId = productId,
+                UserId = userId,
+                UserName = user.UserName,
+                Comment = comment,
+                Rating = rating,
+                CreatedDate = DateTime.Now
+            };
+            _userReviewController.Add(review);
+            _logger.LogInformation("{id}", id);
+            var purchasedProduct = _purchasedProductController.GetById(id);
+            if (purchasedProduct == null)
+            {
+                return RedirectToAction("Index");
+            }
+            purchasedProduct.Status = EOrderStatus.Reviewed;
+            _logger.LogInformation("status: {p}", purchasedProduct.Status.ToString());
+            _purchasedProductController.Update(purchasedProduct);
+            return RedirectToAction("Detail", new { id = productId });
+
+
         }
         
 

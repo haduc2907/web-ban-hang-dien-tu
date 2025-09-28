@@ -10,12 +10,12 @@ namespace Infractructure
 {
     public class InMemoryUserRepository : IUserControllerRepository
     {
-        private readonly List<User> users;
+        private readonly List<Users> users;
         public InMemoryUserRepository()
         {
             users = [];
         }
-        public void Add(User user)
+        public void Add(Users user)
         {
             users.Add(user);
         }
@@ -29,14 +29,29 @@ namespace Infractructure
             }
         }
 
-        public List<User> GetAll()
+        public List<Users> GetAll()
         {
             return users;
         }
 
-        public User? GetById(int userId)
+        public Users? GetById(int userId)
         {
             return users.FirstOrDefault(u => u.Id == userId);
+        }
+
+        public void Update(Users user)
+        {
+            var usere = users.FirstOrDefault(u => u.Id == user.Id);
+            if (usere != null)
+            {
+                usere.UserName = user.UserName;
+                usere.Password = user.Password;
+                usere.Email = user.Email;
+                usere.FullName = user.FullName;
+                usere.PhoneNumber = user.PhoneNumber;
+                usere.Address = user.Address;
+                usere.Role = user.Role;
+            }
         }
     }
 }

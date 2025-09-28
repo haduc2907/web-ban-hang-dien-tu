@@ -10,34 +10,24 @@ namespace Infractructure
 {
     public class InMemoryCartRepository : ICartControllerRepository
     {
-        private readonly List<Cart> carts;
+        private readonly List<CartItems> carts;
         public InMemoryCartRepository()
         {
             carts = [];
         }
 
-        public void AddToCart(Product product, int? userId)
+        public void AddToCart(Products product, int? userId)
         {
-            var cart = carts.FirstOrDefault(c => c.UserId == userId);
-            if (cart == null)
-            {
-                cart = new Cart
-                {
-                    UserId = userId,
-                    Items = new List<CartItem>()
-                };
-                carts.Add(cart);
-            }
-
-            var item = cart.Items.FirstOrDefault(i => i.ProductId == product.Id);
+            var item = carts.FirstOrDefault(c => c.ProductId == product.Id && c.UserId == userId);
             if (item != null)
             {
                 item.Quantity++;
             }
             else
             {
-                cart.Items.Add(new CartItem()
+                carts.Add(new CartItems()
                 {
+                    UserId = userId ?? 0,
                     ProductId = product.Id,
                     Name = product.Name,
                     ImageUrl = product.ImageUrl,
@@ -51,44 +41,40 @@ namespace Infractructure
 
         public void Clear(int userId)
         {
-            var cart = carts.FirstOrDefault(c => c.UserId == userId);
-            if (cart != null)
-            cart.Items.Clear();
+            carts.RemoveAll(c => c.UserId == userId);
         }
 
 
         public void Delete(int id, int userId)
         {
-            var cart = carts.FirstOrDefault(c => c.UserId == userId);
+            var cart = carts.FirstOrDefault(c => c.UserId == userId && c.ProductId == id);
             if (cart != null)
-            {
-                var item = cart.Items.FirstOrDefault(c => c.ProductId == id);
-                if (item != null)
-                {
-                    cart.Items.Remove(item);
-                }
-            }
+                carts.Remove(cart);
 
         }
 
 
-        public List<CartItem> GetAll(int? userId)
+        public List<CartItems> GetAll(int? userId)
         {
-            var cart = carts.FirstOrDefault(c => c.UserId == userId);
-            if (cart != null)
-                return cart.Items;
-            return [];
+            return carts.Where(c => c.UserId == userId).ToList();
+        }
+
+        public CartItems? GetById(int productId, int userId)
+        {
+            return carts.FirstOrDefault(c => c.ProductId == productId && c.UserId == userId);
         }
 
         public void UpdateQuantity(int id, int quantity, int userId)
         {
-            var cart = carts.FirstOrDefault(c => c.UserId == userId);
+            var cart = carts.FirstOrDefault(c => c.UserId == userId && c.ProductId == id);
             if (cart != null)
             {
-                var item = cart.Items.FirstOrDefault(c => c.ProductId == id);
-                if (item != null)
+                cart.Quantity += quantity;
+
+                if (cart.Quantity <= 0)
                 {
-                    item.Quantity += quantity;
+                    // Nếu số lượng <= 0 thì tự động xóa khỏi giỏ
+                    carts.Remove(cart);
                 }
             }
             

@@ -14,11 +14,11 @@ namespace UseCase.Admin_side
         {
             this.repo = repo;
         }
-        public User? GetById(int userId)
+        public Users? GetById(int userId)
         {
             return repo.GetById(userId);
         }
-        public List<User> GetAll()
+        public List<Users> GetAll()
         {
             return repo.GetAll();
         }
@@ -26,9 +26,13 @@ namespace UseCase.Admin_side
         {
             repo.Delete(userId);
         }
-        public void Add(User user)
+        public void Add(Users user)
         {
             repo.Add(user);
+        }
+        public void Update(Users user)
+        {
+            repo.Update(user);
         }
     }
 }

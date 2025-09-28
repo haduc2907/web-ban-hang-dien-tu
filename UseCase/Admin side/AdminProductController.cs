@@ -14,7 +14,7 @@ namespace UseCase.Admin_side
         {
             this.repo = repo;
         }
-        public void Add(Product product)
+        public void Add(Products product)
         {
             repo.Add(product);
         }
@@ -22,19 +22,19 @@ namespace UseCase.Admin_side
         {
             repo.Delete(id);
         }
-        public Product? GetById(int id)
+        public Products? GetById(int id)
         {
             return repo.GetById(id);
         }
-        public void Update(Product product)
+        public void Update(Products product)
         {
             repo.Update(product);
         }
-        public IEnumerable<Product> GetAll()
+        public IEnumerable<Products> GetAll()
         {
             return repo.GetAll();
         }
-        public IEnumerable<Product> GetByCategoryId(int categoryId)
+        public IEnumerable<Products> GetByCategoryId(int categoryId)
         {
             return repo.GetByCategoryId(categoryId);
         }

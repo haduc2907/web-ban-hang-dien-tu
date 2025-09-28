@@ -14,11 +14,11 @@ namespace UseCase.User_side
         {
             this.repo = repo;
         }
-        public List<CartItem> GetAll(int? userId)
+        public List<CartItems> GetAll(int? userId)
         {
             return repo.GetAll(userId);
         }
-        public void AddToCart(Product product, int? userId)
+        public void AddToCart(Products product, int? userId)
         {
             repo.AddToCart(product, userId);
         }
@@ -33,6 +33,10 @@ namespace UseCase.User_side
         public void Clear(int userId)
         {
             repo.Clear(userId);
+        }
+        public CartItems? GetById(int productId, int userId)
+        {
+            return repo.GetById(productId, userId);
         }
     }
 }

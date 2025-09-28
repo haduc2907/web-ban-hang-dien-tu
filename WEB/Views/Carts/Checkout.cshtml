@@ -1,0 +1,36 @@
+﻿@model WEB.Models.CartItemListViewModel
+
+<h2>Xác nhận thanh toán</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Hình ảnh</th>
+            <th>Tên sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+            <th>Tổng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CartItems)
+        {
+            <tr>
+                <td><img src="@item.ImageUrl" style="width:100px;" /></td>
+                <td>@item.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.Price.ToString("N0") đ</td>
+                <td>@string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", item.Price * item.Quantity) đ</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3 class="text-end">
+    Tổng cộng: @string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", Model.CartItems.Sum(c => c.Price * c.Quantity)) đ
+</h3>
+
+<form asp-action="ConfirmCheckout" method="post" class="text-end">
+    <button type="submit" class="btn btn-success">Xác nhận thanh toán</button>
+    <a asp-action="Cart" class="btn btn-secondary">Quay lại giỏ hàng</a>
+</form>

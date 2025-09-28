@@ -35,5 +35,6 @@ namespace WEB.Models
 
         [Required(ErrorMessage = "Thương hiệu không được để trống!")]
         public string Brand { get; set; } = string.Empty;
+        public List<ReviewViewModel> Reviews { get; set; } = [];
     }
 }
