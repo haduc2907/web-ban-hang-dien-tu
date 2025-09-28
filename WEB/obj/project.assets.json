@@ -1842,8 +1842,8 @@
     },
     "Entities/1.0.0": {
       "type": "project",
-      "path": "../Item/Entities.csproj",
-      "msbuildProject": "../Item/Entities.csproj"
+      "path": "../Entities/Entities.csproj",
+      "msbuildProject": "../Entities/Entities.csproj"
     },
     "Infractructure/1.0.0": {
       "type": "project",
@@ -1895,11 +1895,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
+            "C:\\Users\\admin\\source\\repos\\BanHang\\Entities\\Entities.csproj": {
+              "projectPath": "C:\\Users\\admin\\source\\repos\\BanHang\\Entities\\Entities.csproj"
+            },
             "C:\\Users\\admin\\source\\repos\\BanHang\\Infractructure\\Infractructure.csproj": {
               "projectPath": "C:\\Users\\admin\\source\\repos\\BanHang\\Infractructure\\Infractructure.csproj"
-            },
-            "C:\\Users\\admin\\source\\repos\\BanHang\\Item\\Entities.csproj": {
-              "projectPath": "C:\\Users\\admin\\source\\repos\\BanHang\\Item\\Entities.csproj"
             },
             "C:\\Users\\admin\\source\\repos\\BanHang\\UseCase\\UseCase.csproj": {
               "projectPath": "C:\\Users\\admin\\source\\repos\\BanHang\\UseCase\\UseCase.csproj"
