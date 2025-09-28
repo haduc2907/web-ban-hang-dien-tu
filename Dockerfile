@@ -6,7 +6,7 @@ WORKDIR /src
 COPY BanHang.sln .
 COPY WEB/WEB.csproj WEB/
 COPY Infrastructure/Infrastructure.csproj Infrastructure/
-COPY Item/Item.csproj Item/
+COPY Entities/Entities.csproj Entities/
 COPY UseCase/UseCase.csproj UseCase/
 
 # Restore dependencies
