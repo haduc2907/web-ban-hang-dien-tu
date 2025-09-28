@@ -5,7 +5,7 @@ WORKDIR /src
 # Copy solution và project files trước
 COPY BanHang.sln .
 COPY WEB/WEB.csproj WEB/
-COPY Infrastructure/Infrastructure.csproj Infrastructure/
+COPY Infractructure/Infractructure.csproj Infractructure/
 COPY Entities/Entities.csproj Entities/
 COPY UseCase/UseCase.csproj UseCase/
 
