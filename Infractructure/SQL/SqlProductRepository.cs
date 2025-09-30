@@ -99,6 +99,14 @@ namespace Infractructure.SQL
                         query.Append(" AND CategoryId = @CategoryId");
                         cmd.Parameters.AddWithValue("@CategoryId", options.CategoryId.Value);
                     }
+                    if (options.Page.HasValue && options.Page.Value > 0)
+                    {
+                        int pageSize = 1;
+                        int offset = (options.Page.Value - 1) * pageSize;
+                        query.Append(" ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY");
+                        cmd.Parameters.AddWithValue("@Offset", offset);
+                        cmd.Parameters.AddWithValue("@PageSize", pageSize);
+                    }
                     cmd.CommandText = query.ToString();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -230,6 +238,44 @@ namespace Infractructure.SQL
                 }
             }
             return product;
+        }
+
+        public IEnumerable<Products> GetByPage(IEnumerable<Products> source, int page)
+        {
+            var products = new List<Products>();
+            using (var con = new SqlConnection(strCnn))
+            {
+                con.Open();
+                using (var cmd = new SqlCommand("SELECT * FROM Products ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY", con))
+                {
+                    int pageSize = 1;
+                    int offset = (page - 1) * pageSize;
+                    cmd.Parameters.AddWithValue("@Offset", offset);
+                    cmd.Parameters.AddWithValue("@PageSize", pageSize);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var product = new Products
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                                Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString(reader.GetOrdinal("Description")),
+                                Price = reader.GetDecimal(reader.GetOrdinal("Price")),
+                                ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
+                                Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
+                                Status = (EStatusProduct)reader.GetInt32(reader.GetOrdinal("Status")),
+                                CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
+                                UpdatedDate = reader.GetDateTime(reader.GetOrdinal("UpdatedDate")),
+                                Brand = reader.GetString(reader.GetOrdinal("Brand")),
+                                CategoryId = reader.GetInt32(reader.GetOrdinal("CategoryId"))
+                            };
+                            products.Add(product);
+                        }
+                    }
+                }
+            }
+            return products;
         }
 
         public void Update(Products product)

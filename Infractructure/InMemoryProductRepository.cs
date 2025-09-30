@@ -97,5 +97,10 @@ namespace Infractructure
             return source.Where(p => p.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
+
+        public IEnumerable<Products> GetByPage(IEnumerable<Products> source, int page)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

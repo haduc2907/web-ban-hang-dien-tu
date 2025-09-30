@@ -8,6 +8,7 @@ namespace Entities
 {
     public class ProductFilterOptions
     {
+        public int? Page { get; set; }
         public int? CategoryId { get; set; }
         public string? Keyword { get; set; }
         public decimal? MinPrice { get; set; }

@@ -16,5 +16,6 @@ namespace UseCase.Admin_side
         Products? GetById(int Id);
         IEnumerable<Products> GetAll();
         IEnumerable<Products> GetByCategoryId(int categoryId);
+        IEnumerable<Products> GetByPage(IEnumerable<Products> source, int page);
     }
 }

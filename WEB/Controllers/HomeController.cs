@@ -34,9 +34,10 @@ namespace WEB.Controllers
             _authController = authController;
             _logger = logger;
         }
-        public IActionResult Index(int? categoryId, ProductFilterOptions options)
+        public IActionResult Index(int? categoryId, ProductFilterOptions options, int? page)
         {
-            
+            int pageSize = 1;
+            int currentPage = page ?? 1;
             var categories = _adminCategoryController.GetAll();
             IEnumerable<Products> products;
             if (categoryId.HasValue)
@@ -47,11 +48,18 @@ namespace WEB.Controllers
             {
                 products = _adController.GetAll();
             }
+            int totalProducts = _adController.GetAll().Count();
             if (options != null)
             {
                 options.CategoryId = categoryId;
+                options.Page = null;
+                products = _userProductController.Filters(products, options);
+                totalProducts = products.Count();
+                options.Page = currentPage;
                 products = _userProductController.Filters(products, options);
             }
+           
+            _logger.LogInformation("Total Products: {total}", totalProducts);
             return View(new ProductListViewModel()
             {
                 Products = products.Select(p => new ProductViewModel()
@@ -69,7 +77,9 @@ namespace WEB.Controllers
                 {
                     Id = c.Id,
                     Name = c.Name
-                })
+                }),
+                CurrentPage = currentPage,
+                TotalPages = (int)Math.Ceiling(totalProducts / (double)pageSize)
             }
             );
         }

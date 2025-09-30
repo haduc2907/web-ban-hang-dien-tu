@@ -38,5 +38,9 @@ namespace UseCase.Admin_side
         {
             return repo.GetByCategoryId(categoryId);
         }
+        public IEnumerable<Products> GetByPage(IEnumerable<Products> source, int page)
+        {
+            return repo.GetByPage(source, page);
+        }
     }
 }
