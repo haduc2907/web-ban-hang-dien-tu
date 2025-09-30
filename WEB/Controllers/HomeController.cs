@@ -36,7 +36,7 @@ namespace WEB.Controllers
         }
         public IActionResult Index(int? categoryId, ProductFilterOptions options, int? page)
         {
-            int pageSize = 1;
+            int pageSize = 3;
             int currentPage = page ?? 1;
             var categories = _adminCategoryController.GetAll();
             IEnumerable<Products> products;

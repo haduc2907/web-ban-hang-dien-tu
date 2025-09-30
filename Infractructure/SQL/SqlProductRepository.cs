@@ -101,7 +101,7 @@ namespace Infractructure.SQL
                     }
                     if (options.Page.HasValue && options.Page.Value > 0)
                     {
-                        int pageSize = 1;
+                        int pageSize = 3;
                         int offset = (options.Page.Value - 1) * pageSize;
                         query.Append(" ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY");
                         cmd.Parameters.AddWithValue("@Offset", offset);
