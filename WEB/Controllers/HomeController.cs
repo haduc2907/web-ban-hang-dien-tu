@@ -167,7 +167,7 @@ namespace WEB.Controllers
                 UserName = userM.UserName,
                 Email = userM.Email,
                 Password = userM.Password,
-                Role = ESRoleUser.Admin
+                Role = ESRoleUser.Customer
             };
 
             _authController.Register(user);
