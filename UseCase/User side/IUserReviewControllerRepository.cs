@@ -14,5 +14,6 @@ namespace UseCase.User_side
         void Delete(int id);
         Reviews? GetById(int id);
         List<Reviews> GetAll();
+        
     }
 }

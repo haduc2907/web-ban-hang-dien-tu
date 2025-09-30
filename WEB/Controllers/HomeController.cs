@@ -140,6 +140,11 @@ namespace WEB.Controllers
             {
                 ModelState.AddModelError("UserName", "Tên đăng nhập đã tồn tại!");
             }
+            var mailCheck = users.FirstOrDefault(u => u.Email == userM.Email);
+            if (mailCheck != null)
+            {
+                ModelState.AddModelError("Email", "Email đã tồn tại!");
+            }
 
             if (!ModelState.IsValid)
             {
@@ -152,7 +157,7 @@ namespace WEB.Controllers
                 UserName = userM.UserName,
                 Email = userM.Email,
                 Password = userM.Password,
-                Role = ESRoleUser.Customer
+                Role = ESRoleUser.Admin
             };
 
             _authController.Register(user);
@@ -260,6 +265,29 @@ namespace WEB.Controllers
         }
         public IActionResult Delete(int Id)
         {
+            var userStr = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userStr))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            int userId = int.Parse(userStr);
+            var reviews = _userReviewController.GetAll();
+            foreach (var r in reviews)
+            {
+                if (r.ProductId == Id)
+                {
+                    _userReviewController.Delete(r.Id);
+                }
+            }
+            var purchasedProducts = _purchasedProductController.GetAll();
+            foreach (var pp in purchasedProducts)
+            {
+                if (pp.ProductId == Id)
+                {
+                    _purchasedProductController.Delete(pp.Id);
+                }
+            }
+            _cartController.Delete(Id, userId);
             _adController.Delete(Id);
             return RedirectToAction("Manager");
         }
@@ -279,7 +307,7 @@ namespace WEB.Controllers
                     Quantity = p.Quantity,
                     ImageUrl = p.ImageUrl,
                     Price = p.Price,
-                    Status = p.Status,
+                    Status = p.Quantity == 0 ? EStatusProduct.OutOfStock : EStatusProduct.Available,
                     Brand = p.Brand,
                     Reviews = r.Select(rv => new ReviewViewModel()
                     {
