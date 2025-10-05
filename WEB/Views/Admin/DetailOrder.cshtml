@@ -1,0 +1,74 @@
+﻿@using Entities
+@model PurchasedProductListViewModel
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int stt = 1;
+}
+
+<h2 class="mb-4">Chi tiết đơn hàng</h2>
+
+<table class="table table-bordered table-hover align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>Stt</th>
+            <th>Hình ảnh</th>
+            <th>Tên sản phẩm</th>
+            <th>Người mua</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+            <th>Ngày mua</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model.PurchasedProducts)
+        {
+            <tr>
+                <td>@stt</td>
+                <td>
+                    <img src="@p.ImageUrl" alt="@p.Name"
+                         class="img-thumbnail"
+                         style="width:70px;height:70px;object-fit:cover;" />
+                </td>
+                <td>@p.Name</td>
+                <td>@p.UserName</td>
+                <td>@p.Quantity</td>
+                <td>@p.Price.ToString("N0") VNĐ</td>
+                <td>@p.PurchasedDate.ToString("dd/MM/yyyy")</td>
+                <td>
+                    @if(p.Status == Entities.EOrderStatus.PendingConfirmation)
+                    {
+                        @if (p.Status == EOrderStatus.PendingConfirmation)
+                        {
+                            <button class="btn btn-warning btn-sm" disabled>Đơn hàng đang được chờ xác nhận</button>
+                        }
+                        else if (p.Status == EOrderStatus.ToBeShipped)
+                        {
+                            <button class="btn btn-info btn-sm" disabled>Đơn hàng đang được giao</button>
+                        }
+                        else if (p.Status == EOrderStatus.Delivered)
+                        {
+                            <button class="btn btn-success btn-sm" disabled>Đơn hàng đã giao thành công</button>
+                        }
+                        else if (p.Status == EOrderStatus.Cancelled)
+                        {
+                            <button class="btn btn-danger btn-sm" disabled>Đơn hàng đã bị hủy</button>
+                        }
+                        else if (p.Status == EOrderStatus.Reviewed)
+                        {
+                            <button class="btn btn-secondary btn-sm" disabled>Đã đánh giá đơn hàng</button>
+                        }
+                    }
+                </td>
+            </tr>
+            stt++;
+        }
+    </tbody>
+</table>
+
+<div class="mt-3">
+    <a asp-action="Orders" asp-controller="Admin" class="btn btn-secondary">
+        ← Quay lại danh sách đơn hàng
+    </a>
+</div>

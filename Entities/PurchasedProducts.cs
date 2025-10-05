@@ -9,6 +9,7 @@ namespace Entities
     public class PurchasedProducts
     {
         public int Id { get; set; }
+        public int OrderId { get; set; }
         public int UserId { get; set; }
         public string UserName { get; set; } = string.Empty;
         public int ProductId { get; set; }

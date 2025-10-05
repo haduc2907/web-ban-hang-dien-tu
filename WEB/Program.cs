@@ -23,6 +23,7 @@ namespace WEB
             builder.Services.AddTransient<UserProductController>();
             builder.Services.AddTransient<PurchasedProductController>();
             builder.Services.AddTransient<UserReviewController>();
+            builder.Services.AddTransient<OrderController>();
             if (builder.Configuration["DataSource"] == "InMemory")
             {
                 builder.Services.AddSingleton<IAdminProductControllerRepository, InMemoryProductRepository>();
@@ -44,6 +45,7 @@ namespace WEB
                 builder.Services.AddSingleton<IUserProductControllerRepository, SqlProductRepository>();
                 builder.Services.AddSingleton<IPurchasedProductControllerRepository, SqlPurChasedProductRepository>();
                 builder.Services.AddSingleton<IUserReviewControllerRepository, SqlUserReviewRepository>();
+                builder.Services.AddSingleton<IOrderControllerRepository, SqlOrderRepository>();
             }
 
             builder.Services.AddDistributedMemoryCache();

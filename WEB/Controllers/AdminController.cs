@@ -10,10 +10,12 @@ namespace WEB.Controllers
         public class AdminController : Controller
         {
             private readonly ILogger<HomeController> _logger;
+            private readonly OrderController _orderController;
             private readonly PurchasedProductController _purchasedProductController;
             private readonly AdminCategoryController _adminCategoryController;
-            public AdminController(PurchasedProductController purchasedProductController, AdminCategoryController categoryController, ILogger<HomeController> logger)
+            public AdminController(OrderController orderController, PurchasedProductController purchasedProductController, AdminCategoryController categoryController, ILogger<HomeController> logger)
             {
+                _orderController = orderController;
                 _purchasedProductController = purchasedProductController;
                 _adminCategoryController = categoryController;
                 _logger = logger;
@@ -53,9 +55,46 @@ namespace WEB.Controllers
             _purchasedProductController.Update(product);
             return RedirectToAction("ConfirmOrder");
 
-
-
         }
+        [HttpGet]
+        public IActionResult Orders()
+        {
+            OrderListViewModel orderListViewModel = new OrderListViewModel()
+            {
+                Orders = _orderController.GetAllOrders().Select(List => new OrderViewModel() 
+                {
+                    Id = List.Id,
+                    UserId = List.UserId,
+                    UserName = List.UserName,
+                    OrderDate = List.OrderDate,
+                    TotalAmount = List.TotalAmount
+                })
+
+            };
+            return View(orderListViewModel);
+        }
+        [HttpGet]
+        public IActionResult DetailOrder(int orderId)
+        {
+            PurchasedProductListViewModel list = new PurchasedProductListViewModel()
+            {
+                PurchasedProducts = _purchasedProductController.GetAllByOrderId(orderId).Select(p => new PurchasedProductViewModel()
+                {
+                    Id = p.Id,
+                    ProductId = p.ProductId,
+                    UserName = p.UserName,
+                    UserId = p.UserId,
+                    Name = p.Name,
+                    ImageUrl = p.ImageUrl,
+                    Price = p.Price,
+                    Quantity = p.Quantity,
+                    PurchasedDate = p.PurchasedDate,
+                    Status = p.Status
+                })
+            };
+            return View(list);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
             public IActionResult Error()
             {

@@ -34,5 +34,9 @@ namespace UseCase.Admin_side
         {
             return repo.GetAll();
         }
+        public List<PurchasedProducts> GetAllByOrderId(int orderId)
+        {
+            return repo.GetAllByOrderId(orderId);
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace WEB.Models
     public class PurchasedProductViewModel
     {
         public int Id { get; set; }
+        public int OrderId { get; set; }
         public int ProductId { get; set; }
         public string UserName { get; set; } = string.Empty;
         public int UserId { get; set; }

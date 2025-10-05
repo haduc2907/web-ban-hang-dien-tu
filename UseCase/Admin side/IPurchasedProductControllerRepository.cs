@@ -14,6 +14,7 @@ namespace UseCase.Admin_side
         PurchasedProducts? GetById(int id);
         void Update(PurchasedProducts product);
         List<PurchasedProducts> GetAll();
+        List<PurchasedProducts> GetAllByOrderId(int orderId);
 
     }
 }

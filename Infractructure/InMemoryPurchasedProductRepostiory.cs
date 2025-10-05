@@ -30,6 +30,11 @@ namespace Infractructure
             return products;
         }
 
+        public List<PurchasedProducts> GetAllByOrderId(int orderId)
+        {
+            throw new NotImplementedException();
+        }
+
         public PurchasedProducts? GetById(int id)
         {
             return products.FirstOrDefault(p => p.Id == id);

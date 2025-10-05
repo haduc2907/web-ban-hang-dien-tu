@@ -24,9 +24,9 @@ namespace Infractructure.SQL
             {
                 con.Open();
                 var query = @"INSERT INTO PurchasedProducts 
-                        (UserId, UserName, ProductId, Name, ImageUrl, Price, Quantity, PurchasedDate, Status)
+                        (UserId, UserName, ProductId, Name, ImageUrl, Price, Quantity, PurchasedDate, Status, OrderId)
                       VALUES 
-                        (@UserId, @UserName, @ProductId, @Name, @ImageUrl, @Price, @Quantity, @PurchasedDate, @Status)";
+                        (@UserId, @UserName, @ProductId, @Name, @ImageUrl, @Price, @Quantity, @PurchasedDate, @Status, @OrderId)";
 
                 using (var cmd = new SqlCommand(query, con))
                 {
@@ -39,6 +39,7 @@ namespace Infractructure.SQL
                     cmd.Parameters.AddWithValue("@Quantity", product.Quantity);
                     cmd.Parameters.AddWithValue("@PurchasedDate", product.PurchasedDate);
                     cmd.Parameters.AddWithValue("@Status", (int)product.Status);
+                    cmd.Parameters.AddWithValue("@OrderId", product.OrderId);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -86,12 +87,48 @@ namespace Infractructure.SQL
                             Price = reader.GetDecimal(reader.GetOrdinal("Price")),
                             Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
                             PurchasedDate = reader.GetDateTime(reader.GetOrdinal("PurchasedDate")),
+                            OrderId = reader.GetInt32(reader.GetOrdinal("OrderId")),
                             Status = (EOrderStatus)reader.GetInt32(reader.GetOrdinal("Status"))
                         });
                     }
                 }
             }
 
+            return list;
+        }
+
+        public List<PurchasedProducts> GetAllByOrderId(int orderId)
+        {
+            List<PurchasedProducts> list = new List<PurchasedProducts>();
+            using (var con = new SqlConnection(strCnn))
+            {
+                con.Open();
+                var query = "SELECT * FROM PurchasedProducts WHERE OrderId = @OrderId";
+                using (var cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@OrderId", orderId);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            list.Add(new PurchasedProducts
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
+                                UserName = reader.GetString(reader.GetOrdinal("UserName")),
+                                ProductId = reader.GetInt32(reader.GetOrdinal("ProductId")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                                ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
+                                Price = reader.GetDecimal(reader.GetOrdinal("Price")),
+                                Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
+                                PurchasedDate = reader.GetDateTime(reader.GetOrdinal("PurchasedDate")),
+                                OrderId = reader.GetInt32(reader.GetOrdinal("OrderId")),
+                                Status = (EOrderStatus)reader.GetInt32(reader.GetOrdinal("Status"))
+                            });
+                        }
+                    }
+                }
+            }
             return list;
         }
 
@@ -123,6 +160,7 @@ namespace Infractructure.SQL
                                 Price = reader.GetDecimal(reader.GetOrdinal("Price")),
                                 Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
                                 PurchasedDate = reader.GetDateTime(reader.GetOrdinal("PurchasedDate")),
+                                OrderId = reader.GetInt32(reader.GetOrdinal("OrderId")),
                                 Status = (EOrderStatus)reader.GetInt32(reader.GetOrdinal("Status"))
                             };
                         }
@@ -147,6 +185,7 @@ namespace Infractructure.SQL
                                   Price = @Price,
                                   Quantity = @Quantity,
                                   PurchasedDate = @PurchasedDate,
+                                  OrderId = @OrderId,
                                   Status = @Status
                               WHERE Id = @Id";
 
@@ -161,6 +200,7 @@ namespace Infractructure.SQL
                     cmd.Parameters.AddWithValue("@Price", product.Price);
                     cmd.Parameters.AddWithValue("@Quantity", product.Quantity);
                     cmd.Parameters.AddWithValue("@PurchasedDate", product.PurchasedDate);
+                    cmd.Parameters.AddWithValue("@OrderId", product.OrderId);
                     cmd.Parameters.AddWithValue("@Status", (int)product.Status);
 
                     cmd.ExecuteNonQuery();

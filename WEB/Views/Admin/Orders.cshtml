@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Danh sách đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int stt = 1;
+}
+@model WEB.Models.OrderListViewModel
+
+<div class="container mt-4">
+    <h2>Danh sách đơn hàng</h2>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Stt</th>
+                <th>Id</th>
+                <th>Người đặt</th>
+                <th>Ngày đặt</th>
+                <th>Tổng tiền</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <td>@stt</td>
+                    <td>@order.Id</td>
+                    <td>@order.UserName</td>
+                    <td>@order.OrderDate.ToString("dd/MM/yyyy")</td>
+                    <td><span class="badge bg-success">@order.TotalAmount.ToString("N0") VNĐ</span></td>
+                    <td>
+                        <a asp-action="DetailOrder" asp-route-orderId="@order.Id" class="btn btn-primary btn-sm">
+                            Xem chi tiết
+                        </a>
+                    </td>
+                </tr>
+                stt++;
+            }
+        </tbody>
+    </table>
+</div>
