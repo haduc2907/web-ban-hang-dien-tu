@@ -1,5 +1,8 @@
 ﻿@model WEB.Models.LoginViewModel
-
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
 <h2>Đăng nhập</h2>
 
 <!-- Hiển thị thông báo lỗi -->
